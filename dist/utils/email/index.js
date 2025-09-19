@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendmail = sendmail;
+const dev_config_1 = require("./../../config/env/dev.config");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 async function sendmail({ to, subject, html }) {
     const transporter = nodemailer_1.default.createTransport({
@@ -12,8 +13,8 @@ async function sendmail({ to, subject, html }) {
         port: 587,
         secure: false,
         auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD
+            user: dev_config_1.devConfig.EMAIL,
+            pass: dev_config_1.devConfig.PASSWORD,
         }
     });
     await transporter.sendMail({

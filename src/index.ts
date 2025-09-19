@@ -1,6 +1,6 @@
 import express from "express"//@types/express 
 import { config } from "dotenv";
-config({path:"./config/dev.env"})
+//config();
 import { bootstrap } from "./app.controller";
 
 const app=express();

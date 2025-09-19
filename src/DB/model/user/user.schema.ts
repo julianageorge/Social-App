@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 import { IUser } from "../../../utils/common/interface";
 import { GENDER, SYS_ROLE, USER_AGENT } from "../../../utils/common/enum";
+import { sendmail } from "../../../utils/email";
 
 
 export const userSchema=new Schema<IUser>({
@@ -33,4 +34,9 @@ userSchema.virtual("fullName").get(function(){
     this.firstName=fName as string;
     this.lastName=lName as string;
 
+});
+userSchema.pre("save",async function (next){
+    if(this.userAgent!=USER_AGENT.google&&this.isNew==true){
+    await sendmail({to:this.email,subject:"Verify your email",html:`<p>your Otp to verify your account is ${this.otp}</p>`});
+}
 })

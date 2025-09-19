@@ -4,8 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express")); //@types/express 
-const dotenv_1 = require("dotenv");
-(0, dotenv_1.config)({ path: "./config/dev.env" });
+//config();
 const app_controller_1 = require("./app.controller");
 const app = (0, express_1.default)();
 (0, app_controller_1.bootstrap)(app, express_1.default);

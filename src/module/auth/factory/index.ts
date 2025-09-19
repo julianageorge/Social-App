@@ -21,52 +21,7 @@ export class AuthFactoryService{
     user.role=SYS_ROLE.user;
     user.gender=registerDto.gender;
     user.userAgent=USER_AGENT.local;
+    user.isVerived=false;
     return user;
 
-    }
-    verify(user:IUser,otp:string){
-        if(user.isVerived){
-            throw new BadRequestException("User already verified")
-        }
-         if (user.otp !== otp) {
-      throw new BadRequestException("Invalid OTP");
-    }
-
-    if (!user.otpExpiryAt || user.otpExpiryAt < new Date()) {
-      throw new BadRequestException("OTP expired");
-    }
-    user.isVerived = true;
-     user.otp="" ;
-     user.otpExpiryAt=new Date();
-
-    return user;
-  
-    }
-
-   login(user:IUser,loginDto:LoginDto){
-        const validPassword=CompareHash(loginDto.password,user.password);
-
-         if (!validPassword) {
-            throw new NotAuthorizedException("Invalid credentials");
-        }
-       if(!user.isVerived){
-            throw new BadRequestException("Please verify your email first");
-        }
-
-
-        const token = jwt.sign({email:user.email,role:user.role}, process.env.SECRET_KEY as string, {
-            expiresIn: "5h", 
-        });
-        return {
-            token,user:{
-                fullName: user.fullName,
-                email: user.email,
-                role: user.role,
-            }
-        }
-
-        
-    }
-    
-  
-}
+    }}
