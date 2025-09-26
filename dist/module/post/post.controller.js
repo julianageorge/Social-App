@@ -9,4 +9,5 @@ const post_service_1 = __importDefault(require("./post.service"));
 const router = (0, express_1.Router)();
 router.post("/", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.create);
 router.patch("/:id", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.addReaction);
+router.get("/:id", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.getSpcificPost);
 exports.default = router;

@@ -1,4 +1,5 @@
 
+import { success } from 'zod';
 import { PostRepository } from '../../DB/model/post/post.repository';
 import { NotFoundException, REACTION } from '../../utils';
 import { PostFactoryService } from './factory';
@@ -45,5 +46,14 @@ class PostService{
     }
         return res.sendStatus(204);
          }
+      getSpcificPost=async (req:Request,res:Response)=>{
+        const {id}=req.params;
+        const postExiste=await this.postRepository.getOne({_id:id},{},{populate:[{path:"userId",select:"fullName firstName lastNam"},{path:"reactions.userId",select:"fullName firstName lastName"}]});
+        if(!postExiste){
+            throw new NotFoundException("Post Not Found!");
+        }
+        return res.status(200).json({message:"done",success:true,postExiste});
+
+      }
 }
  export default new PostService();

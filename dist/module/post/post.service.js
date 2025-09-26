@@ -34,5 +34,13 @@ class PostService {
         }
         return res.sendStatus(204);
     };
+    getSpcificPost = async (req, res) => {
+        const { id } = req.params;
+        const postExiste = await this.postRepository.getOne({ _id: id }, {}, { populate: [{ path: "userId", select: "fullName firstName lastNam" }, { path: "reactions.userId", select: "fullName firstName lastName" }] });
+        if (!postExiste) {
+            throw new utils_1.NotFoundException("Post Not Found!");
+        }
+        return res.status(200).json({ message: "done", success: true, postExiste });
+    };
 }
 exports.default = new PostService();

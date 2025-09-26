@@ -44,6 +44,6 @@ declare module 'jsonwebtoken'{
 }
 declare module 'express'{
     interface Request{
-        user:IUser;
+        user:IUser & Document;
     }
 }
