@@ -26,5 +26,10 @@ export class NotFoundException extends AppError{
     constructor(message:string,errorDetails?:object[]){
         super(message,400,errorDetails);
     }
+}
+ export class ForbiddenException extends AppError{
+        constructor(message:string,errorDetails?:object[]){
+            super(message,403,errorDetails);
+        }
  }
  

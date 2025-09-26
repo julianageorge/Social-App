@@ -19,9 +19,9 @@ export const userSchema=new Schema<IUser>({
         },min:6},
         credentialUpdatedAt:Date,
         phonrNumber:String,
-        role:{type:String,enum:SYS_ROLE,default:SYS_ROLE.user},
-        gender:{type:String,enum:GENDER,default:GENDER.male},
-        userAgent:{type:String,enum:USER_AGENT,default:USER_AGENT.local},
+        role:{type:Number,enum:SYS_ROLE,default:SYS_ROLE.user},
+        gender:{type:Number,enum:GENDER,default:GENDER.male},
+        userAgent:{type:Number,enum:USER_AGENT,default:USER_AGENT.local},
         otp:{type:String},
         otpExpiryAt:{type:Date},
         isVerived:{type:Boolean,default:false}

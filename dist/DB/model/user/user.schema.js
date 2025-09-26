@@ -16,9 +16,9 @@ exports.userSchema = new mongoose_1.Schema({
         }, min: 6 },
     credentialUpdatedAt: Date,
     phonrNumber: String,
-    role: { type: String, enum: enum_1.SYS_ROLE, default: enum_1.SYS_ROLE.user },
-    gender: { type: String, enum: enum_1.GENDER, default: enum_1.GENDER.male },
-    userAgent: { type: String, enum: enum_1.USER_AGENT, default: enum_1.USER_AGENT.local },
+    role: { type: Number, enum: enum_1.SYS_ROLE, default: enum_1.SYS_ROLE.user },
+    gender: { type: Number, enum: enum_1.GENDER, default: enum_1.GENDER.male },
+    userAgent: { type: Number, enum: enum_1.USER_AGENT, default: enum_1.USER_AGENT.local },
     otp: { type: String },
     otpExpiryAt: { type: Date },
     isVerived: { type: Boolean, default: false }

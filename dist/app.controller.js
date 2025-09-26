@@ -8,6 +8,7 @@ function bootstrap(app, express) {
     app.use(express.json());
     app.use("/auth", module_1.authRouter);
     app.use("/user", module_1.userRouter);
+    app.use("/post", module_1.postRouter);
     app.use("/{*dummy}", (req, res, next) => {
         return res.status(404).json({ message: "Invalid router", success: false });
     });
