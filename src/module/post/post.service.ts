@@ -48,7 +48,9 @@ class PostService{
          }
       getSpcificPost=async (req:Request,res:Response)=>{
         const {id}=req.params;
-        const postExiste=await this.postRepository.getOne({_id:id},{},{populate:[{path:"userId",select:"fullName firstName lastNam"},{path:"reactions.userId",select:"fullName firstName lastName"}]});
+        const postExiste=await this.postRepository.getOne({_id:id},{},
+            {populate:[{path:"userId",select:"fullName firstName lastName"},
+            {path:"reactions.userId",select:"fullName firstName lastName"}]});
         if(!postExiste){
             throw new NotFoundException("Post Not Found!");
         }
