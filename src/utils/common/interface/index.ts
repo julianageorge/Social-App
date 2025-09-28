@@ -47,3 +47,12 @@ declare module 'express'{
         user:IUser & Document;
     }
 }
+export interface Icomment{
+    userId:ObjectId;
+    postId:ObjectId;
+    parentIds:ObjectId[];
+    content:string;
+    attachment:IAttechment;
+    reactions:IReaction[];
+    mentions?:ObjectId[];
+}
