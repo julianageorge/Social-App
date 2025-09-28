@@ -3,9 +3,9 @@ import { Model, ProjectionType, RootFilterQuery } from "mongoose";
 
 export abstract class AbstractRepository<T>{
     constructor(protected model:Model<T>){}
-    async create(item:Partial<T>){
+    async create(item:Partial<T>):Promise<T&Document>{
     const document=new this.model(item);
-    return await document.save();
+    return (await document.save()) as unknown as T & Document;
     }
    async update( filter:RootFilterQuery<T>,
         update:UpdateQuery<T>,

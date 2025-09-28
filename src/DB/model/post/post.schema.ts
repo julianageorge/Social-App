@@ -12,4 +12,5 @@ content:{type:String,/*required:function(){
 }*/trim:true},
 reactions:[reactionSchema]
 
-},{timestamps:true});
+},{timestamps:true,toJSON:{virtuals:true},toObject:{virtuals:true}});
+PostSchema.virtual("comments",{localField:"_id",foreignField:"postId",ref:"Comment"})

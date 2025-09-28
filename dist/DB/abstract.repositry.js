@@ -8,7 +8,7 @@ class AbstractRepository {
     }
     async create(item) {
         const document = new this.model(item);
-        return await document.save();
+        return (await document.save());
     }
     async update(filter, update, options) {
         await this.model.updateOne(filter, update, options);
