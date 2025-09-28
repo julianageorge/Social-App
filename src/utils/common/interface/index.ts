@@ -3,7 +3,7 @@ import { GENDER, REACTION, SYS_ROLE, USER_AGENT } from "../../../utils/common/en
 import { Request } from "express";
 import { ObjectId } from "mongoose";
 export interface IUser{
-    _id: import("mongoose").Schema.Types.ObjectId;
+    _id: ObjectId;
     firstName:string;
     lastName:string;
     fullName?:string;//virtual
@@ -29,6 +29,7 @@ export interface IReaction {
 }
 
 export interface IPost{
+    _id: ObjectId;
     userId:ObjectId;
     content:string;
     reactions:IReaction[];
@@ -48,6 +49,7 @@ declare module 'express'{
     }
 }
 export interface Icomment{
+    _id: ObjectId;
     userId:ObjectId;
     postId:ObjectId;
     parentIds:ObjectId[];
