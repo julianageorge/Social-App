@@ -15,15 +15,17 @@ reactions:[reactionSchema]
 
 },{timestamps:true,toJSON:{virtuals:true},toObject:{virtuals:true}});
 PostSchema.virtual("comments",{localField:"_id",foreignField:"postId",ref:"Comment"});
+
 PostSchema.pre("deleteOne",async function (next){
     const filter=typeof this.getFilter=="function"?this.getFilter():{};
-    const firstLayer=await Comment.find({postId:filter._id,parentId:null});
+    /*const firstLayer=await Comment.find({postId:filter._id,parentId:null});
     for(const comment of firstLayer){
         if(firstLayer.length){
             await Comment.deleteOne({_id:comment._id});
             
         }
-    }
+    }*/
+   await Comment.deleteMany({postId:filter._id});
     next();
 
 })

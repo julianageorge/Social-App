@@ -5,6 +5,7 @@ import { CommentRepository } from './../../DB/model/comment/comment.repository';
 import { Request, Response } from "express";
 import { PostRepository } from "../../DB";
 import { Icomment, IPost, NotAuthorizedException, NotFoundException } from "../../utils";
+import { addReactionProvider } from '../../utils/common/provider/react.provider';
 
 class CommentService{
     private readonly postRepository=new PostRepository();
@@ -53,5 +54,13 @@ class CommentService{
         return res.sendStatus(204);
 
     }
+    public addReaction=async(req:Request,res:Response)=>{
+           const {id}=req.params;
+           const userId=req.user._id;
+            const { reaction } = req.body;
+           await addReactionProvider(this.commentRepository,id,userId.toString(),reaction);
+       
+           return res.sendStatus(204);
+            }
 }
 export default new CommentService();

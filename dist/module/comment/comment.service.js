@@ -4,6 +4,7 @@ const index_1 = require("./factory/index");
 const comment_repository_1 = require("./../../DB/model/comment/comment.repository");
 const DB_1 = require("../../DB");
 const utils_1 = require("../../utils");
+const react_provider_1 = require("../../utils/common/provider/react.provider");
 class CommentService {
     postRepository = new DB_1.PostRepository();
     commentRepository = new comment_repository_1.CommentRepository();
@@ -44,6 +45,13 @@ class CommentService {
             throw new utils_1.NotAuthorizedException("you are not authorize to delete this Comment");
         }
         await this.commentRepository.delete({ _id: id });
+        return res.sendStatus(204);
+    };
+    addReaction = async (req, res) => {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const { reaction } = req.body;
+        await (0, react_provider_1.addReactionProvider)(this.commentRepository, id, userId.toString(), reaction);
         return res.sendStatus(204);
     };
 }

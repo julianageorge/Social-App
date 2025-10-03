@@ -18,11 +18,13 @@ exports.PostSchema = new mongoose_1.Schema({
 exports.PostSchema.virtual("comments", { localField: "_id", foreignField: "postId", ref: "Comment" });
 exports.PostSchema.pre("deleteOne", async function (next) {
     const filter = typeof this.getFilter == "function" ? this.getFilter() : {};
-    const firstLayer = await comment_model_1.Comment.find({ postId: filter._id, parentId: null });
-    for (const comment of firstLayer) {
-        if (firstLayer.length) {
-            await comment_model_1.Comment.deleteOne({ _id: comment._id });
+    /*const firstLayer=await Comment.find({postId:filter._id,parentId:null});
+    for(const comment of firstLayer){
+        if(firstLayer.length){
+            await Comment.deleteOne({_id:comment._id});
+            
         }
-    }
+    }*/
+    await comment_model_1.Comment.deleteMany({ postId: filter._id });
     next();
 });

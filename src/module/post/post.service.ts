@@ -5,6 +5,7 @@ import { NotAuthorizedException, NotFoundException, REACTION } from '../../utils
 import { PostFactoryService } from './factory';
 import { CreatePostDto } from './post.dto';
 import { NextFunction, Request, Response } from "express";
+import { addReactionProvider } from '../../utils/common/provider/react.provider';
 
 class PostService{
     private readonly postRepository=new PostRepository();
@@ -22,28 +23,9 @@ class PostService{
     public addReaction=async(req:Request,res:Response)=>{
         const {id}=req.params;
         const userId=req.user._id;
-         const { reaction } = req.body
-        const posttExistense=await this.postRepository.exist({_id:id});
-        if(!posttExistense){
-            throw new NotFoundException("Post Not Found!");
-        }
-       let userReacted= posttExistense.reactions.findIndex((reaction)=>{
-            return reaction.userId.toString()==userId.toString();
-        });
-        if(userReacted==-1){
-        await this.postRepository.update({_id:id},{$push:{reactions:{reaction:[null,undefined,""].includes(reaction)?REACTION.like:reaction,userId}}});
-    }
-    else if([undefined,null,""].includes(reaction)){
-        await this.postRepository.update({_id:id},{$pull:{reactions:posttExistense.reactions[userReacted]}});
-
-    }
+         const { reaction } = req.body;
+        await addReactionProvider(this.postRepository,id,userId.toString(),reaction);
     
-    else{
-          await this.postRepository.update(
-      { _id: id, "reactions.userId": userId },
-      { $set: { "reactions.$.reaction": reaction } }
-    );
-    }
         return res.sendStatus(204);
          }
     public getSpcificPost=async (req:Request,res:Response)=>{
