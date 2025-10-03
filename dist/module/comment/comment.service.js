@@ -36,9 +36,12 @@ class CommentService {
     };
     deleteComment = async (req, res) => {
         const { id } = req.params;
-        const commentExist = await this.commentRepository.exist({ _id: id });
+        const commentExist = await this.commentRepository.exist({ _id: id }, {}, { populate: [{ path: "postId", select: "userId" }] });
         if (!commentExist) {
             throw new utils_1.NotFoundException("Comment Not Found!");
+        }
+        if (commentExist.userId.toString() != req.user._id.toString() && commentExist.postId.userId.toString() != req.user._id.toString()) {
+            throw new utils_1.NotAuthorizedException("you are not authorize to delete this Comment");
         }
         await this.commentRepository.delete({ _id: id });
         return res.sendStatus(204);

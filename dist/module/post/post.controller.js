@@ -12,4 +12,5 @@ router.use("/:postId/comment", __1.CommentRouter);
 router.post("/", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.create);
 router.patch("/:id", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.addReaction);
 router.get("/:id", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.getSpcificPost);
+router.delete("/:id", (0, auth_middlewae_1.isAuthenticated)(), post_service_1.default.deletePost);
 exports.default = router;

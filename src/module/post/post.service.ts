@@ -1,7 +1,7 @@
 
 import { success } from 'zod';
 import { PostRepository } from '../../DB/model/post/post.repository';
-import { NotFoundException, REACTION } from '../../utils';
+import { NotAuthorizedException, NotFoundException, REACTION } from '../../utils';
 import { PostFactoryService } from './factory';
 import { CreatePostDto } from './post.dto';
 import { NextFunction, Request, Response } from "express";
@@ -10,7 +10,7 @@ class PostService{
     private readonly postRepository=new PostRepository();
     private readonly postFactorySrvice=new PostFactoryService();
 
-    create=async (req:Request,res:Response,next:NextFunction)=>{
+    public create=async (req:Request,res:Response,next:NextFunction)=>{
 
         const createPostDto:CreatePostDto=req.body;
         const post=this.postFactorySrvice.createPost(createPostDto,req.user);
@@ -19,7 +19,7 @@ class PostService{
 
 
     }
-     addReaction=async(req:Request,res:Response)=>{
+    public addReaction=async(req:Request,res:Response)=>{
         const {id}=req.params;
         const userId=req.user._id;
          const { reaction } = req.body
@@ -46,7 +46,7 @@ class PostService{
     }
         return res.sendStatus(204);
          }
-      getSpcificPost=async (req:Request,res:Response)=>{
+    public getSpcificPost=async (req:Request,res:Response)=>{
         const {id}=req.params;
         const postExiste=await this.postRepository.getOne({_id:id},{},
             {populate:[{path:"userId",select:"fullName firstName lastName"},
@@ -58,6 +58,20 @@ class PostService{
         return res.status(200).json({message:"done",success:true,postExiste});
 
       }
+    public deletePost=async(req:Request,res:Response)=>{
+        const {id}=req.params;
+        const PostExist=await this.postRepository.exist({_id:id});
+        if(!PostExist){
+            throw new NotFoundException("Post Not Found!");
+        }
+        if(PostExist.userId.toString()!=req.user._id.toString()){
+            throw new NotAuthorizedException("you are not authorize to delete this post")
+
+        }
+        await this.postRepository.delete({_id:id});
+        return res.sendStatus(204);
+
+    }
 
 }
  export default new PostService();

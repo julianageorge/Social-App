@@ -7,5 +7,6 @@ router.use("/:postId/comment",CommentRouter);
 router.post("/",isAuthenticated(),postService.create);
 router.patch("/:id",isAuthenticated(),postService.addReaction);
 router.get("/:id",isAuthenticated(),postService.getSpcificPost);
+router.delete("/:id",isAuthenticated(),postService.deletePost);
 
 export default router;

@@ -44,5 +44,17 @@ class PostService {
         }
         return res.status(200).json({ message: "done", success: true, postExiste });
     };
+    deletePost = async (req, res) => {
+        const { id } = req.params;
+        const PostExist = await this.postRepository.exist({ _id: id });
+        if (!PostExist) {
+            throw new utils_1.NotFoundException("Post Not Found!");
+        }
+        if (PostExist.userId.toString() != req.user._id.toString()) {
+            throw new utils_1.NotAuthorizedException("you are not authorize to delete this post");
+        }
+        await this.postRepository.delete({ _id: id });
+        return res.sendStatus(204);
+    };
 }
 exports.default = new PostService();
