@@ -34,5 +34,14 @@ class CommentService {
         }
         return res.status(200).json({ message: "Comment fetched successfully", data: { CommentExist }, success: true });
     };
+    deleteComment = async (req, res) => {
+        const { id } = req.params;
+        const commentExist = await this.commentRepository.exist({ _id: id });
+        if (!commentExist) {
+            throw new utils_1.NotFoundException("Comment Not Found!");
+        }
+        await this.commentRepository.delete({ _id: id });
+        return res.sendStatus(204);
+    };
 }
 exports.default = new CommentService();

@@ -58,5 +58,6 @@ class PostService{
         return res.status(200).json({message:"done",success:true,postExiste});
 
       }
+
 }
  export default new PostService();

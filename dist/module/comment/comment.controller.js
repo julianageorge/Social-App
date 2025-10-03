@@ -9,4 +9,5 @@ const comment_service_1 = __importDefault(require("./comment.service"));
 const router = (0, express_1.Router)({ mergeParams: true });
 router.post("{/:id}", (0, auth_middlewae_1.isAuthenticated)(), comment_service_1.default.create);
 router.get("/:id", (0, auth_middlewae_1.isAuthenticated)(), comment_service_1.default.getSpcific);
+router.delete("/:id", (0, auth_middlewae_1.isAuthenticated)(), comment_service_1.default.deleteComment);
 exports.default = router;

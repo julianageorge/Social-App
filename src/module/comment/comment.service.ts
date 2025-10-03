@@ -11,7 +11,7 @@ class CommentService{
     private readonly commentRepository= new CommentRepository();
     private readonly commentFactoryService= new CommentFactoryService();
 
-    create=async(req:Request,res:Response)=>{
+    public create=async(req:Request,res:Response)=>{
         const{postId,id}=req.params;
         const createCommentdto:CreateCommentdto=req.body;
         const postExist=await this.postRepository.exist({_id:postId});
@@ -31,13 +31,23 @@ class CommentService{
 
 
     }
-    getSpcific=async(req:Request,res:Response)=>{
+    public getSpcific=async(req:Request,res:Response)=>{
         const {id}=req.params;
         const CommentExist=await this.commentRepository.exist({_id:id},{},{populate:[{path:"replies"}]});
         if(!CommentExist){
             throw new NotFoundException("Comment Not Found");
         }
         return res.status(200).json({message:"Comment fetched successfully",data:{CommentExist},success:true});
+
+    }
+    public deleteComment=async(req:Request,res:Response)=>{
+        const {id}=req.params;
+        const commentExist=await this.commentRepository.exist({_id:id});
+        if(!commentExist){
+            throw new NotFoundException("Comment Not Found!");
+        }
+        await this.commentRepository.delete({_id:id});
+        return res.sendStatus(204);
 
     }
 }

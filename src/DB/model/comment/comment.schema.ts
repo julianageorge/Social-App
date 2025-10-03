@@ -27,4 +27,14 @@ CommentSchema.virtual("replies",{
     ref:"Comment",
     foreignField:"parentId",
     localField:"_id"
+});
+CommentSchema.pre("deleteOne",async function (next) {
+    const filter=typeof this.getFilter=="function"?this.getFilter():{};
+    const replies=await this.model.find({parentId:filter._id});
+    if(replies.length){
+        for(const reply of replies){
+           await this.model.deleteOne({_id:reply._id});
+        }
+    }
+    
 })
