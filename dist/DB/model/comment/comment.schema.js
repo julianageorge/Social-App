@@ -14,11 +14,15 @@ exports.CommentSchema = new mongoose_1.Schema({
         ref: "Post",
         required: true
     },
-    parentIds: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Comment",
-            required: true
-        }],
+    parentId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Comment"
+    },
     content: { type: String },
     reactions: [reaction_schema_1.reactionSchema],
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+exports.CommentSchema.virtual("replies", {
+    ref: "Comment",
+    foreignField: "parentId",
+    localField: "_id"
+});

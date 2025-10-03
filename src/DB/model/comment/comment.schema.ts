@@ -13,14 +13,18 @@ export const CommentSchema=new Schema<Icomment>({
         ref:"Post",
         required:true
     },
-    parentIds:[{
+    parentId:{
         type:Schema.Types.ObjectId,
-        ref:"Comment",
-        required:true
-    }],
+        ref:"Comment"
+    },
     content:{type:String},
     reactions:[reactionSchema],
     
     
 
-},{timestamps:true})
+},{timestamps:true,toJSON:{virtuals:true},toObject:{virtuals:true}});
+CommentSchema.virtual("replies",{
+    ref:"Comment",
+    foreignField:"parentId",
+    localField:"_id"
+})

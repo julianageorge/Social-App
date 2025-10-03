@@ -31,5 +31,14 @@ class CommentService{
 
 
     }
+    getSpcific=async(req:Request,res:Response)=>{
+        const {id}=req.params;
+        const CommentExist=await this.commentRepository.exist({_id:id},{},{populate:[{path:"replies"}]});
+        if(!CommentExist){
+            throw new NotFoundException("Comment Not Found");
+        }
+        return res.status(200).json({message:"Comment fetched successfully",data:{CommentExist},success:true});
+
+    }
 }
 export default new CommentService();

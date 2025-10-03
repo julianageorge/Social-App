@@ -26,5 +26,13 @@ class CommentService {
         const newComment = await this.commentRepository.create(comment);
         return res.status(201).json({ message: "comment created Successfully", succcess: true, data: newComment });
     };
+    getSpcific = async (req, res) => {
+        const { id } = req.params;
+        const CommentExist = await this.commentRepository.exist({ _id: id }, {}, { populate: [{ path: "replies" }] });
+        if (!CommentExist) {
+            throw new utils_1.NotFoundException("Comment Not Found");
+        }
+        return res.status(200).json({ message: "Comment fetched successfully", data: { CommentExist }, success: true });
+    };
 }
 exports.default = new CommentService();

@@ -51,7 +51,7 @@ class PostService{
         const postExiste=await this.postRepository.getOne({_id:id},{},
             {populate:[{path:"userId",select:"fullName firstName lastName"},
             {path:"reactions.userId",select:"fullName firstName lastName"},
-            {path:"comments",match:{parentIds:[]}}]});
+            {path:"comments",match:{parentId:null}}]});
         if(!postExiste){
             throw new NotFoundException("Post Not Found!");
         }

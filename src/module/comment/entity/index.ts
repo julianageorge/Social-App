@@ -4,7 +4,7 @@ import { IAttechment, IReaction } from "../../../utils";
 export class Comment{
         userId:ObjectId;
         postId:ObjectId;
-        parentIds:ObjectId[];
+        parentId:ObjectId;
         content:string;
         attachment?:IAttechment;
         reactions:IReaction[];

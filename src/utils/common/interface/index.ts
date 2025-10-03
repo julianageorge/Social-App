@@ -52,7 +52,7 @@ export interface Icomment{
     _id: ObjectId;
     userId:ObjectId;
     postId:ObjectId;
-    parentIds:ObjectId[];
+    parentId:ObjectId|null;
     content:string;
     attachment:IAttechment;
     reactions:IReaction[];
