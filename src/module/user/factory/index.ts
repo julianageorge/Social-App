@@ -1,6 +1,6 @@
 import { encryption } from "../../../utils/crypto";
 import { User } from "../../auth/entity";
-import { UpdateBasicInfoDto } from "../user.dto";
+import { UpdateBasicInfoDto, UpdateEmailDto } from "../user.dto";
 
 
 export class UserFactory {
@@ -23,6 +23,15 @@ export class UserFactory {
     if (updateBasicInfoDto.email) {
         user.email = updateBasicInfoDto.email;
     }
+
+    return user;
+  }
+  UpdateEmail(updateEmailDto: UpdateEmailDto) {
+    const user = new User();
+
+    if (updateEmailDto.email){
+      user.email = updateEmailDto.email;
+    } 
 
     return user;
   }

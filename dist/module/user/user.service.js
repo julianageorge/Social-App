@@ -49,5 +49,16 @@ class UserService {
         const updatedUser = await this.userRepositry.updateOne({ _id: userId }, updatedFields, { new: true });
         return res.status(200).json({ message: "Basic info updated successfully", user: updatedUser, success: true });
     };
+    UpdateEmail = async (req, res) => {
+        const updateEmailDto = req.body;
+        const userId = req.user._id;
+        const existingUser = await this.userRepositry.exist({ email: updateEmailDto.email });
+        if (existingUser && existingUser._id.toString() !== userId.toString()) {
+            throw new error_1.BadRequestException("Email already in use!");
+        }
+        const updatedFields = this.userFactory.UpdateEmail(updateEmailDto);
+        const updatedUser = await this.userRepositry.updateOne({ _id: userId }, updatedFields, { new: true });
+        return res.status(200).json({ message: "Email updated successfully", user: updatedUser, success: true });
+    };
 }
 exports.default = new UserService();

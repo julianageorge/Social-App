@@ -20,5 +20,12 @@ class UserFactory {
         }
         return user;
     }
+    UpdateEmail(updateEmailDto) {
+        const user = new entity_1.User();
+        if (updateEmailDto.email) {
+            user.email = updateEmailDto.email;
+        }
+        return user;
+    }
 }
 exports.UserFactory = UserFactory;

@@ -13,3 +13,6 @@ export interface UpdateBasicInfoDto{
     gender:GENDER;
            
 }
+export interface UpdateEmailDto {
+    email: string;
+}

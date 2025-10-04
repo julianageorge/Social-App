@@ -10,4 +10,5 @@ const router = (0, express_1.Router)();
 router.get("/:id", user_service_1.default.getProfile);
 router.patch("/update-password", (0, auth_middlewae_1.isAuthenticated)(), user_service_1.default.UpdatePassword);
 router.patch("/update-basic-info", (0, auth_middlewae_1.isAuthenticated)(), user_service_1.default.UpdateBasicInfo);
+router.patch("/update-email", (0, auth_middlewae_1.isAuthenticated)(), user_service_1.default.UpdateEmail);
 exports.default = router;
