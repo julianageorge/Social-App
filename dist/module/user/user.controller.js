@@ -9,4 +9,5 @@ const auth_middlewae_1 = require("../../middleware/auth.middlewae");
 const router = (0, express_1.Router)();
 router.get("/:id", user_service_1.default.getProfile);
 router.patch("/update-password", (0, auth_middlewae_1.isAuthenticated)(), user_service_1.default.UpdatePassword);
+router.patch("/update-basic-info", (0, auth_middlewae_1.isAuthenticated)(), user_service_1.default.UpdateBasicInfo);
 exports.default = router;

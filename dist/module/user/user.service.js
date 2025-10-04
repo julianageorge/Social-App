@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const error_1 = require("../../utils/error");
 const DB_1 = require("../../DB");
 const utils_1 = require("../../utils");
+const factory_1 = require("./factory");
 class UserService {
     userRepositry = new DB_1.UserRepository();
+    userFactory = new factory_1.UserFactory();
     constructor() { }
     getProfile = async (req, res, next) => {
         let user = await this.userRepositry.getOne({ _id: req.params.id });
@@ -33,6 +35,19 @@ class UserService {
         dbUser.password = (0, utils_1.generateHash)(updatePasswordDto.newPassword);
         await this.userRepositry.update({ _id: dbUser._id }, dbUser);
         return res.status(200).json({ message: "done", success: true });
+    };
+    UpdateBasicInfo = async (req, res) => {
+        const updateBasicInfoDto = req.body;
+        const userId = req.user._id;
+        if (updateBasicInfoDto.email) {
+            const existingUser = await this.userRepositry.exist({ email: updateBasicInfoDto.email });
+            if (existingUser && existingUser._id.toString() !== userId.toString()) {
+                throw new error_1.BadRequestException("Email already in use!");
+            }
+        }
+        const updatedFields = this.userFactory.UpdateBasicInfo(updateBasicInfoDto);
+        const updatedUser = await this.userRepositry.updateOne({ _id: userId }, updatedFields, { new: true });
+        return res.status(200).json({ message: "Basic info updated successfully", user: updatedUser, success: true });
     };
 }
 exports.default = new UserService();

@@ -1,3 +1,4 @@
+import { FilterQuery, UpdateQuery } from "mongoose";
 import { IUser } from "../../../utils/common/interface";
 import { AbstractRepository } from "../../abstract.repositry";
 import { User } from "./user.model";
@@ -10,4 +11,19 @@ export class UserRepository extends AbstractRepository<IUser>{
     async getAllUsers(){
         return await this.model.find();
     }
+    
+async updateOne(
+    filter: FilterQuery<IUser>,
+    update: UpdateQuery<IUser>,
+    options?: { new?: boolean } 
+  ): Promise<IUser | null> {
+    const updatedDoc = await this.model.findOneAndUpdate(
+      filter,
+      update,
+      { ...options, new: true } 
+    );
+    return  updatedDoc;
+  }
+        
+
 }

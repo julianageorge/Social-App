@@ -10,5 +10,9 @@ class UserRepository extends abstract_repositry_1.AbstractRepository {
     async getAllUsers() {
         return await this.model.find();
     }
+    async updateOne(filter, update, options) {
+        const updatedDoc = await this.model.findOneAndUpdate(filter, update, { ...options, new: true });
+        return updatedDoc;
+    }
 }
 exports.UserRepository = UserRepository;
