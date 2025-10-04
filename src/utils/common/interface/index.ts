@@ -1,7 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { GENDER, REACTION, SYS_ROLE, USER_AGENT } from "../../../utils/common/enum";
 import { Request } from "express";
-import { ObjectId } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 export interface IUser{
     _id: ObjectId;
     firstName:string;
@@ -43,11 +43,13 @@ declare module 'jsonwebtoken'{
     role:string
     }
 }
-declare module 'express'{
-    interface Request{
-        user:IUser & Document;
-    }
+
+declare module "express" {
+  interface Request {
+    user: (IUser & Document<any, any, any>);
+  }
 }
+
 export interface Icomment{
     _id: ObjectId;
     userId:ObjectId;
