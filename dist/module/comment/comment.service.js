@@ -35,7 +35,7 @@ class CommentService {
         }
         return res.status(200).json({ message: "Comment fetched successfully", data: { CommentExist }, success: true });
     };
-    deleteComment = async (req, res) => {
+    HardDeleteComment = async (req, res) => {
         const { id } = req.params;
         const commentExist = await this.commentRepository.exist({ _id: id }, {}, { populate: [{ path: "postId", select: "userId" }] });
         if (!commentExist) {
@@ -52,6 +52,31 @@ class CommentService {
         const userId = req.user._id;
         const { reaction } = req.body;
         await (0, react_provider_1.addReactionProvider)(this.commentRepository, id, userId.toString(), reaction);
+        return res.sendStatus(204);
+    };
+    updateComment = async (req, res) => {
+        const { id } = req.params;
+        const { content } = req.body;
+        const commentExist = await this.commentRepository.exist({ _id: id });
+        if (!commentExist)
+            throw new utils_1.NotFoundException("Comment Not Found!");
+        if (commentExist.isFrozen)
+            throw new utils_1.NotAuthorizedException("This comment is frozen and cannot be updated.");
+        if (commentExist.userId.toString() !== req.user._id.toString())
+            throw new utils_1.NotAuthorizedException("You are not authorized to update this comment.");
+        await this.commentRepository.update({ _id: id }, { content });
+        return res.sendStatus(204);
+    };
+    freezeComment = async (req, res) => {
+        const { id } = req.params;
+        const commentExist = await this.commentRepository.exist({ _id: id }, {}, { populate: [{ path: "postId", select: "userId" }] });
+        if (!commentExist) {
+            throw new utils_1.NotFoundException("Comment Not Found!");
+        }
+        if (commentExist.userId.toString() != req.user._id.toString() && commentExist.postId.userId.toString() != req.user._id.toString()) {
+            throw new utils_1.NotAuthorizedException("you are not authorize to freeze this Comment");
+        }
+        await this.commentRepository.update({ _id: id }, { isFrozen: true });
         return res.sendStatus(204);
     };
 }

@@ -41,7 +41,7 @@ class CommentService{
         return res.status(200).json({message:"Comment fetched successfully",data:{CommentExist},success:true});
 
     }
-    public deleteComment=async(req:Request,res:Response)=>{
+    public HardDeleteComment=async(req:Request,res:Response)=>{
         const {id}=req.params;
         const commentExist=await this.commentRepository.exist({_id:id},{},{populate:[{path:"postId",select:"userId"}]});
         if(!commentExist){
@@ -62,5 +62,34 @@ class CommentService{
        
            return res.sendStatus(204);
             }
+    public updateComment=async(req:Request,res:Response)=>{
+            const { id } = req.params;
+            const { content } = req.body;
+          
+            const commentExist = await this.commentRepository.exist({ _id: id });
+            if (!commentExist) throw new NotFoundException("Comment Not Found!");
+          
+            if (commentExist.isFrozen)
+              throw new NotAuthorizedException("This comment is frozen and cannot be updated.");
+          
+            if (commentExist.userId.toString() !== req.user._id.toString())
+              throw new NotAuthorizedException("You are not authorized to update this comment.");
+          
+            await this.commentRepository.update({ _id: id },{ content }  );   
+            return res.sendStatus(204);
+    }
+    public freezeComment=async(req:Request,res:Response)=>{
+        const {id}=req.params;
+        const commentExist=await this.commentRepository.exist({_id:id},{},{populate:[{path:"postId",select:"userId"}]});
+        if(!commentExist){
+            throw new NotFoundException("Comment Not Found!");
+        }
+        if(commentExist.userId.toString()!=req.user._id.toString()&&(commentExist.postId as unknown as IPost ).userId.toString()!=req.user._id.toString()){
+            throw new NotAuthorizedException("you are not authorize to freeze this Comment")
+        }
+        await this.commentRepository.update({_id:id},{isFrozen:true});
+        return res.sendStatus(204);
+    }
+
 }
 export default new CommentService();
