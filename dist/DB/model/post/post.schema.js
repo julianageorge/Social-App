@@ -13,7 +13,8 @@ exports.PostSchema = new mongoose_1.Schema({
             return true;
         }*/
         trim: true },
-    reactions: [reaction_schema_1.reactionSchema]
+    reactions: [reaction_schema_1.reactionSchema],
+    isFrozen: { type: Boolean, default: false }
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 exports.PostSchema.virtual("comments", { localField: "_id", foreignField: "postId", ref: "Comment" });
 exports.PostSchema.pre("deleteOne", async function (next) {

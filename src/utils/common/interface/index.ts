@@ -33,7 +33,8 @@ export interface IPost{
     userId:ObjectId;
     content:string;
     reactions:IReaction[];
-    attachments?:IAttechment[];    
+    attachments?:IAttechment[];   
+    isFrozen?:boolean; 
 }
 
 
@@ -59,4 +60,5 @@ export interface Icomment{
     attachment:IAttechment;
     reactions:IReaction[];
     mentions?:ObjectId[];
+    isFrozen?:boolean;
 }

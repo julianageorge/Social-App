@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { IPost, IReaction, REACTION } from "../../../utils";
+import { IPost } from "../../../utils";
 import { reactionSchema } from "../common/reaction.schema";
 import { Comment } from "../comment/comment.model";
 
@@ -11,7 +11,8 @@ content:{type:String,/*required:function(){
     }
     return true;
 }*/trim:true},
-reactions:[reactionSchema]
+reactions:[reactionSchema],
+isFrozen: { type: Boolean, default: false }
 
 },{timestamps:true,toJSON:{virtuals:true},toObject:{virtuals:true}});
 PostSchema.virtual("comments",{localField:"_id",foreignField:"postId",ref:"Comment"});

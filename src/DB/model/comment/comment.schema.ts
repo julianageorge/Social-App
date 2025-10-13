@@ -19,6 +19,7 @@ export const CommentSchema=new Schema<Icomment>({
     },
     content:{type:String},
     reactions:[reactionSchema],
+    isFrozen:{type:Boolean,default:false}
     
     
 

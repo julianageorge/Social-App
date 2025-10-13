@@ -30,7 +30,7 @@ class PostService {
         }
         return res.status(200).json({ message: "done", success: true, postExiste });
     };
-    deletePost = async (req, res) => {
+    hardDeletePost = async (req, res) => {
         const { id } = req.params;
         const PostExist = await this.postRepository.exist({ _id: id });
         if (!PostExist) {
@@ -41,6 +41,32 @@ class PostService {
         }
         await this.postRepository.delete({ _id: id });
         return res.sendStatus(204);
+    };
+    updatePost = async (req, res) => {
+        const { id } = req.params;
+        const { content } = req.body;
+        const PostExist = await this.postRepository.exist({ _id: id });
+        if (!PostExist) {
+            throw new utils_1.NotFoundException("Post Not Found!");
+        }
+        if (PostExist.isFrozen)
+            throw new utils_1.NotAuthorizedException("This post is frozen and cannot be updated.");
+        if (PostExist.userId.toString() !== req.user._id.toString())
+            throw new utils_1.NotAuthorizedException("You are not authorized to update this post.");
+        const updatedPost = await this.postRepository.update({ _id: id }, { content });
+        return res.status(200).json({ message: "Post updated successfully", success: true });
+    };
+    freezePost = async (req, res) => {
+        const { id } = req.params;
+        const PostExist = await this.postRepository.exist({ _id: id });
+        if (!PostExist) {
+            throw new utils_1.NotFoundException("Post Not Found!");
+        }
+        if (PostExist.userId.toString() != req.user._id.toString()) {
+            throw new utils_1.NotAuthorizedException("you are not authorize to freeze this post");
+        }
+        await this.postRepository.update({ _id: id }, { $set: { isFrozen: true } });
+        return res.status(200).json({ message: "Post frozen successfully", success: true });
     };
 }
 exports.default = new PostService();
