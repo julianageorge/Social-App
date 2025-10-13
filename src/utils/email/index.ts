@@ -6,7 +6,7 @@ interface SendMailOptions extends MailOptions {
   tags?: string[]; 
 }
 
-export async function sendMail({ to, subject, html, tags = [] }: SendMailOptions) {
+export async function sendmail({ to, subject, html, tags = [] }: SendMailOptions) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",

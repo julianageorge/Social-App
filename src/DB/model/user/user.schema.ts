@@ -24,7 +24,11 @@ export const userSchema=new Schema<IUser>({
         userAgent:{type:Number,enum:USER_AGENT,default:USER_AGENT.local},
         otp:{type:String},
         otpExpiryAt:{type:Date},
-        isVerived:{type:Boolean,default:false}
+        isVerived:{type:Boolean,default:false},
+        blockedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }], 
+        friends: [{ type: Schema.Types.ObjectId, ref: "User" }],      
+        friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }] 
+
 },
 {timestamps:true,toJSON:{virtuals:true},toObject:{virtuals:true}});
 userSchema.virtual("fullName").get(function(){

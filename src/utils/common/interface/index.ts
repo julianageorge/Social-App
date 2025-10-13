@@ -16,7 +16,10 @@ export interface IUser{
     userAgent:USER_AGENT;
     otp?:string;
     otpExpiryAt?:Date
-    isVerived:boolean
+    isVerived:boolean;
+    blockedUsers: ObjectId[];
+    friends: ObjectId[];
+    friendRequests: ObjectId[];
 
 }
 export interface IAttechment{

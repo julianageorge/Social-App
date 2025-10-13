@@ -21,7 +21,10 @@ exports.userSchema = new mongoose_1.Schema({
     userAgent: { type: Number, enum: enum_1.USER_AGENT, default: enum_1.USER_AGENT.local },
     otp: { type: String },
     otpExpiryAt: { type: Date },
-    isVerived: { type: Boolean, default: false }
+    isVerived: { type: Boolean, default: false },
+    blockedUsers: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }],
+    friends: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }],
+    friendRequests: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }]
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 exports.userSchema.virtual("fullName").get(function () {
     return this.firstName + " " + this.lastName;

@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMail = sendMail;
+exports.sendmail = sendmail;
 const dev_config_1 = require("./../../config/env/dev.config");
 const nodemailer_1 = __importDefault(require("nodemailer"));
-async function sendMail({ to, subject, html, tags = [] }) {
+async function sendmail({ to, subject, html, tags = [] }) {
     const transporter = nodemailer_1.default.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
