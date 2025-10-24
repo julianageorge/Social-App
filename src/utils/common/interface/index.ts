@@ -30,6 +30,20 @@ export interface IReaction {
     reaction:REACTION;
     userId:ObjectId
 }
+export interface IMessage{
+    readonly _id: ObjectId;
+    sender:ObjectId;
+    content:string;
+    attachment?:IAttechment;
+    reactions?:IReaction[];
+    mentions?:ObjectId[];
+    isFrozen?:boolean;
+}
+export interface IChat{
+    readonly _id:ObjectId;
+   message:ObjectId[];
+   users:ObjectId[];
+}
 
 export interface IPost{
     _id: ObjectId;

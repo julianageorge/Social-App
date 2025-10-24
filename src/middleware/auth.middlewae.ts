@@ -8,7 +8,8 @@ export const isAuthenticated=()=>{
     const token=req.headers.authorization as string;
     const payload=verifyToken(token);
     const userRepositry=new UserRepository();
-    const user= await userRepositry.exist({_id:payload._id});
+    const user= await userRepositry.exist({_id:payload._id},{},{populate:[{path:"friends",select:"fullName firstName lastName"}]});
+    
     if(!user){
         throw new NotFoundException("User Not Found !");
     }
